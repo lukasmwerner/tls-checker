@@ -27,7 +27,10 @@ func main() {
 	p := tea.NewProgram(initalModel(hostname))
 
 	go func() {
-		link, _ := url.Parse("https://"+hostname)
+		link, _ := url.Parse(hostname)
+		if link.Hostname() == "" {
+			link.Host = hostname
+		}
 
 		c := scan.TestAllTLSVersions(link)
 		for v := range c {
